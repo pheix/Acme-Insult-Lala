@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: rakudo-star:latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Perform test with Pheix test suite
+        run: |
+          wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && chmod a+x /usr/local/bin/yq
+          git clone https://gitlab.com/pheix-pool/core-perl6.git /pheix
+          ln -sf /pheix/run-tests.bash run-tests.bash 
+          ln -s `pwd` /tmp/Acme-Insult-Lala
+          cd /tmp/Acme-Insult-Lala && RAKULIB=lib bash run-tests.bash -f .run-tests.conf.yml -p yq -l -c
+          cat `ls | grep "testreport"`
