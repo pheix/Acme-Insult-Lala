@@ -1,0 +1,4 @@
+target: Acme::Insult::Lala
+stages:
+  - test: raku /tmp/Acme-Insult-Lala/t/001-meta.t
+  - test: raku /tmp/Acme-Insult-Lala/t/010-basic.t
