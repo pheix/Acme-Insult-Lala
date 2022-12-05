@@ -15,11 +15,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Perform test with Pheix test suite
+      - name: Perform test with Trove
         run: |
           wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && chmod a+x /usr/local/bin/yq
-          git clone https://gitlab.com/pheix-pool/core-perl6.git /pheix
-          ln -sf /pheix/run-tests.bash run-tests.bash 
+          zef install Trove
           ln -s `pwd` /tmp/Acme-Insult-Lala
-          cd /tmp/Acme-Insult-Lala && RAKULIB=lib bash run-tests.bash -f .run-tests.conf.yml -p yq -l -c
+          cd /tmp/Acme-Insult-Lala && RAKULIB=lib trove-cli --f=/tmp/Acme-Insult-Lala/.run-tests.conf.yml --p=yq -l -c
           cat `ls | grep "testreport"`
